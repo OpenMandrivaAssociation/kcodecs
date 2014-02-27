@@ -1,11 +1,11 @@
-%define major 5
+%define major 4
 %define libname %mklibname KF5Codecs %{major}
 %define devname %mklibname KF5Codecs -d
 %define debug_package %{nil}
 
 Name: kcodecs
-Version: 4.95.0
-Release: 2
+Version: 4.96.0
+Release: 1
 Source0: http://ftp5.gwdg.de/pub/linux/kde/unstable/frameworks/4.95.0/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 text codec conversion library
 URL: http://kde.org/
@@ -47,6 +47,8 @@ Development files (Headers etc.) for %{name}.
 
 %install
 %makeinstall_std -C build
+mkdir -p %{buildroot}%{_libdir}/qt5
+mv %{buildroot}%{_prefix}/mkspecs %{buildroot}%{_libdir}/qt5
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}*
@@ -55,3 +57,4 @@ Development files (Headers etc.) for %{name}.
 %{_includedir}/*
 %{_libdir}/*.so
 %{_libdir}/cmake/KF5Codecs
+%{_libdir}/qt5/mkspecs/modules/*
