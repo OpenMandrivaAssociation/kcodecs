@@ -4,7 +4,7 @@
 %define debug_package %{nil}
 
 Name: kcodecs
-Version: 4.98.0
+Version: 4.99.0
 Release: 1
 Source0: http://ftp5.gwdg.de/pub/linux/kde/unstable/frameworks/%{version}/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 text codec conversion library
@@ -26,6 +26,7 @@ The KDE Frameworks 5 text codec conversion library.
 %package -n %{libname}
 Summary: The KDE Frameworks 5 text codec conversion library
 Group: System/Libraries
+Requires: %{name} = %{EVRD}
 
 %description -n %{libname}
 The KDE Frameworks 5 text codec conversion library.
@@ -49,6 +50,16 @@ Development files (Headers etc.) for %{name}.
 %makeinstall_std -C build
 mkdir -p %{buildroot}%{_libdir}/qt5
 mv %{buildroot}%{_prefix}/mkspecs %{buildroot}%{_libdir}/qt5
+
+L="`pwd`/kcodecs%{major}_qt.lang"
+cd %{buildroot}
+for i in .%{_datadir}/locale/*/LC_MESSAGES/*.qm; do
+	LNG=`echo $i |cut -d/ -f5`
+	echo -n "%lang($LNG) " >>$L
+	echo $i |cut -b2- >>$L
+done
+
+%files -f kcodecs%{major}_qt.lang
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}
