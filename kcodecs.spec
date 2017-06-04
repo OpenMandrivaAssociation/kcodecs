@@ -17,6 +17,7 @@ BuildRequires: pkgconfig(Qt5Core)
 BuildRequires: pkgconfig(Qt5Widgets)
 BuildRequires: pkgconfig(Qt5Xml)
 BuildRequires: pkgconfig(Qt5Test)
+BuildRequires: gperf
 Requires: %{libname} = %{EVRD}
 
 %description
