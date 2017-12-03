@@ -5,7 +5,7 @@
 %define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 
 Name: kcodecs
-Version:	5.40.0
+Version:	5.41.0
 Release:	1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 text codec conversion library
@@ -58,6 +58,7 @@ for i in .%{_datadir}/locale/*/LC_MESSAGES/*.qm; do
 done
 
 %files -f kcodecs%{major}_qt.lang
+%{_sysconfdir}/xdg/kcodecs.categories
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}
