@@ -5,7 +5,7 @@
 %define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 
 Name: kcodecs
-Version:	5.72.0
+Version:	5.73.0
 Release:	1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 text codec conversion library
@@ -87,6 +87,7 @@ rm -rf %{buildroot}%{_libdir}/python2*
 
 %files -f kcodecs%{major}_qt.lang
 %{_datadir}/qlogging-categories5/kcodecs.categories
+%{_datadir}/qlogging-categories5/kcodecs.renamecategories
 
 %files -n %{libname}
 %{_libdir}/*.so.%{major}
