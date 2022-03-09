@@ -4,7 +4,7 @@
 %define stable %([ "`echo %{version} |cut -d. -f3`" -ge 80 ] && echo -n un; echo -n stable)
 
 Name: kcodecs
-Version:	5.91.0
+Version:	5.92.0
 Release:	1
 Source0: http://download.kde.org/%{stable}/frameworks/%(echo %{version} |cut -d. -f1-2)/%{name}-%{version}.tar.xz
 Summary: The KDE Frameworks 5 text codec conversion library
@@ -17,10 +17,7 @@ BuildRequires: pkgconfig(Qt5Widgets)
 BuildRequires: pkgconfig(Qt5Xml)
 BuildRequires: pkgconfig(Qt5Test)
 BuildRequires: gperf
-# For Python bindings
-BuildRequires: cmake(PythonModuleGeneration)
-BuildRequires: pkgconfig(python3)
-BuildRequires: python-qt5-core
+Obsoletes: python-%{name} < %{EVRD}
 # For QCH format docs
 BuildRequires: doxygen
 BuildRequires: qt5-assistant
@@ -53,14 +50,6 @@ Suggests: %{devname} = %{EVRD}
 %description -n %{name}-devel-docs
 Developer documentation for %{name} for use with Qt Assistant
 
-%package -n python-%{name}
-Summary: Python bindings for %{name}
-Group: System/Libraries
-Requires: %{libname} = %{EVRD}
-
-%description -n python-%{name}
-Python bindings for %{name}
-
 %prep
 %autosetup -p1
 %cmake_kde5
@@ -71,8 +60,6 @@ Python bindings for %{name}
 %install
 %ninja_install -C build
 
-[ -s %{buildroot}%{python_sitearch}/PyKF5/__init__.py ] || rm -f %{buildroot}%{python_sitearch}/PyKF5/__init__.py
-
 L="`pwd`/kcodecs%{major}_qt.lang"
 cd %{buildroot}
 for i in .%{_datadir}/locale/*/LC_MESSAGES/*.qm; do
@@ -80,9 +67,6 @@ for i in .%{_datadir}/locale/*/LC_MESSAGES/*.qm; do
 	echo -n "%lang($LNG) " >>$L
 	echo $i |cut -b2- >>$L
 done
-
-# Let's not ship py2 crap unless and until something still needs it...
-rm -rf %{buildroot}%{_libdir}/python2*
 
 %files -f kcodecs%{major}_qt.lang
 %{_datadir}/qlogging-categories5/kcodecs.categories
@@ -100,9 +84,3 @@ rm -rf %{buildroot}%{_libdir}/python2*
 
 %files -n %{name}-devel-docs
 %{_docdir}/qt5/*.{tags,qch}
-
-%files -n python-%{name}
-%dir %{python_sitearch}/PyKF5
-%{python_sitearch}/PyKF5/KCodecs.so
-%dir %{_datadir}/sip/PyKF5
-%{_datadir}/sip/PyKF5/KCodecs
